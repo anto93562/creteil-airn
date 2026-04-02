@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bienvenue chez Lucie & Antonino — Créteil</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #FF5A5F;
+    --red-dark: #e04a4f;
+    --red-soft: #fff0f0;
+    --green: #00a86b;
+    --green-soft: #e6f7f2;
+    --gold: #f0a500;
+    --gold-soft: #fff8e6;
+    --blue: #3b82f6;
+    --blue-soft: #eff6ff;
+    --purple: #7c3aed;
+    --purple-soft: #f5f3ff;
+    --orange: #f97316;
+    --orange-soft: #fff7ed;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #ebebeb;
+    --text: #1a1a1a;
+    --muted: #888;
+    --light: #f5f5f5;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--red);
+    padding: 3rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,0,0,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: radial-gradient(circle, white 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .hosts-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 14px; position: relative;
+  }
+  .host-av {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 2.5px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; color: white;
+    backdrop-filter: blur(4px);
+  }
+  .host-sep { color: rgba(255,255,255,0.7); font-size: 20px; font-weight: 300; }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px; color: white;
+    line-height: 1.25; margin-bottom: 6px;
+    position: relative;
+  }
+  .header h1 em { font-style: italic; }
+  .header-sub { font-size: 13px; color: rgba(255,255,255,0.85); position: relative; }
+  .addr-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 30px; padding: 5px 14px;
+    font-size: 12px; color: white;
+    margin-top: 10px; position: relative;
+  }
+
+  /* ── NAV TABS ── */
+  .tabs-wrap {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .tabs {
+    display: flex; overflow-x: auto;
+    scrollbar-width: none; padding: 0 12px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto;
+    display: flex; align-items: center; gap: 5px;
+    padding: 13px 12px;
+    font-size: 12px; font-weight: 500;
+    color: var(--muted);
+    border-bottom: 2.5px solid transparent;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.2s;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .tab-icon { font-size: 15px; }
+  .badge {
+    background: var(--red); color: white;
+    border-radius: 20px; font-size: 9px; font-weight: 600;
+    min-width: 17px; height: 17px; padding: 0 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── CONTENT ── */
+  .content { padding: 20px 16px 100px; }
+  .section-title {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 10px;
+  }
+
+  /* ── WELCOME ── */
+  .welcome-card {
+    background: white; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 18px 20px; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+  }
+  .welcome-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--red);
+    border-radius: 4px 0 0 4px;
+  }
+  .welcome-card p {
+    font-size: 13.5px; line-height: 1.7; color: #444;
+  }
+  .welcome-card .sign {
+    margin-top: 10px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px; color: var(--red);
+    font-style: italic;
+  }
+
+  /* ── CONTACT CARDS ── */
+  .contact-card {
+    background: white; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 14px 16px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .c-av {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .c-info { flex: 1; }
+  .c-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .c-phone { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .c-btns { display: flex; gap: 7px; }
+  .c-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; text-decoration: none;
+    border: 1px solid var(--border); background: var(--light);
+    transition: transform 0.15s;
+  }
+  .c-btn:active { transform: scale(0.92); }
+  .c-btn.wa { background: #25D366; border-color: #25D366; }
+
+  /* ── PLACE CARDS ── */
+  .place-card {
+    background: white; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 13px 14px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .place-card:active { transform: scale(0.985); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .p-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .p-info { flex: 1; min-width: 0; }
+  .p-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .p-meta { font-size: 12px; color: var(--muted); }
+  .p-rating { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .p-stars { color: var(--gold); }
+  .p-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .del-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 15px; padding: 4px; color: #ccc;
+    transition: color 0.15s; border-radius: 6px;
+  }
+  .del-btn:hover { color: #e74c3c; }
+  .arr { color: #ccc; font-size: 18px; font-weight: 300; }
+
+  /* ── ADD BUTTON ── */
+  .add-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 13px;
+    border: 1.5px dashed #ddd;
+    border-radius: var(--radius);
+    background: none; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    margin-top: 4px; transition: all 0.2s;
+  }
+  .add-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+  .add-plus { font-size: 20px; color: var(--red); line-height: 1; }
+
+  /* ── TRANSPORT ── */
+  .metro-card {
+    background: white; border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 16px; margin-bottom: 8px; overflow: hidden;
+    position: relative;
+  }
+  .metro-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 4px; background: #0055A4;
+  }
+  .metro-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .metro-badge {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #0055A4; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .metro-name { font-size: 14px; font-weight: 600; }
+  .metro-station { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .metro-detail { font-size: 12px; color: #666; line-height: 1.6; padding-left: 46px; }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center; padding: 24px 16px;
+    color: var(--muted); font-size: 13px;
+  }
+  .empty-icon { font-size: 30px; margin-bottom: 8px; opacity: 0.5; }
+
+  /* ── MODAL ── */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200; align-items: flex-end; justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 24px 24px 0 0;
+    width: 100%; max-width: 430px;
+    padding: 8px 20px 36px;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal-handle {
+    width: 36px; height: 4px; border-radius: 2px;
+    background: #ddd; margin: 10px auto 18px;
+  }
+  .modal h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px; margin-bottom: 16px;
+  }
+  .field { margin-bottom: 13px; }
+  .field label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); display: block; margin-bottom: 5px; }
+  .field input {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px; font-family: 'DM Sans', sans-serif;
+    background: var(--light); color: var(--text);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  .field input:focus { border-color: var(--red); background: white; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 6px; }
+  .btn-cancel {
+    flex: 1; padding: 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: none; cursor: pointer;
+    font-size: 14px; font-weight: 500; color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-save {
+    flex: 2; padding: 13px; border: none;
+    border-radius: var(--radius-sm);
+    background: var(--red); color: white;
+    cursor: pointer; font-size: 14px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+  .btn-save:hover { background: var(--red-dark); }
+
+  /* ── ARRIVAL INFO ── */
+  .arrival-intro {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+    margin-bottom: 16px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .arrival-intro-icon {
+    font-size: 28px; flex-shrink: 0; margin-top: 2px;
+  }
+  .arrival-intro-text { font-size: 13.5px; color: #444; line-height: 1.65; }
+  .arrival-intro-text strong { color: var(--text); }
+
+  .steps-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+    margin-bottom: 8px;
+  }
+  .steps-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px; margin-bottom: 16px; color: var(--text);
+  }
+  .step {
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .step:last-child { margin-bottom: 0; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--red); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  .step-line {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .step-text { font-size: 13.5px; color: #333; line-height: 1.6; }
+  .step-connector {
+    width: 1px; height: 14px; background: #e0e0e0;
+    margin-left: 13px; margin-top: -10px; margin-bottom: 2px;
+  }
+  .tip-box {
+    background: #fff8e6; border: 1px solid #ffe4a0;
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    margin-top: 14px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .tip-box-icon { font-size: 18px; flex-shrink: 0; }
+  .tip-box-text { font-size: 12.5px; color: #7a5a00; line-height: 1.6; }
+
+  /* ── HOME ACCENT CARDS ── */
+  .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .quick-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px;
+    text-decoration: none; display: block;
+    transition: transform 0.15s;
+  }
+  .quick-card:active { transform: scale(0.97); }
+  .qc-icon { font-size: 24px; margin-bottom: 8px; }
+  .qc-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .qc-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-pattern"></div>
+  <div class="hosts-row">
+    <div class="host-av">L</div>
+    <span class="host-sep">&amp;</span>
+    <div class="host-av">A</div>
+  </div>
+  <h1>Bienvenue chez<br><em>Lucie &amp; Antonino !</em></h1>
+  <p class="header-sub">Le meilleur de Créteil sélectionné pour vous</p>
+  <div class="addr-chip">📍 16 rue de Bretagne, Créteil</div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('accueil')"><span class="tab-icon">🏠</span> Accueil</button>
+    <button class="tab" onclick="switchTab('arrivee')"><span class="tab-icon">🔑</span> Arrivée</button>
+    <button class="tab" onclick="switchTab('supermarche')"><span class="tab-icon">🛒</span> Supermarchés <span class="badge" id="b-supermarche">3</span></button>
+    <button class="tab" onclick="switchTab('restaurant')"><span class="tab-icon">🍽️</span> Restos <span class="badge" id="b-restaurant">3</span></button>
+    <button class="tab" onclick="switchTab('cafe')"><span class="tab-icon">☕</span> Cafés <span class="badge" id="b-cafe">3</span></button>
+    <button class="tab" onclick="switchTab('activite')"><span class="tab-icon">🎯</span> Activités <span class="badge" id="b-activite">2</span></button>
+    <button class="tab" onclick="switchTab('transport')"><span class="tab-icon">🚇</span> Transports</button>
+  </div>
+</div>
+
+<!-- ACCUEIL -->
+<div id="panel-accueil" class="panel active">
+  <div class="content">
+    <div class="welcome-card">
+      <p>Nous sommes ravis de vous accueillir à Créteil ! Ce guide contient toutes les bonnes adresses du quartier que nous avons sélectionnées pour vous. N'hésitez pas à nous contacter si vous avez besoin de quoi que ce soit.</p>
+      <div class="sign">— Lucie &amp; Antonino</div>
+    </div>
+
+    <div class="section-title">Vos hôtes</div>
+    <div class="contact-card">
+      <div class="c-av" style="background:#fff8e6;color:#b07a00;">L</div>
+      <div class="c-info">
+        <div class="c-name">Lucie</div>
+        <div class="c-phone">+33 6 52 98 51 14</div>
+      </div>
+      <div class="c-btns">
+        <a class="c-btn" href="tel:+33652985114">📞</a>
+        <a class="c-btn wa" href="https://wa.me/33652985114" target="_blank">💬</a>
+      </div>
+    </div>
+    <div class="contact-card" style="margin-bottom:20px">
+      <div class="c-av" style="background:#e6f7f2;color:#00704a;">A</div>
+      <div class="c-info">
+        <div class="c-name">Antonino</div>
+        <div class="c-phone">+33 6 27 45 52 48</div>
+      </div>
+      <div class="c-btns">
+        <a class="c-btn" href="tel:+33627455248">📞</a>
+        <a class="c-btn wa" href="https://wa.me/33627455248" target="_blank">💬</a>
+      </div>
+    </div>
+
+    <div class="section-title">À proximité</div>
+    <div class="quick-grid">
+      <a class="quick-card" href="https://maps.google.com/?q=Carrefour+Creteil" target="_blank">
+        <div class="qc-icon">🛒</div>
+        <div class="qc-name">Carrefour</div>
+        <div class="qc-meta">Supermarché</div>
+      </a>
+      <a class="quick-card" href="https://maps.google.com/?q=La+Parenthese+Creteil" target="_blank">
+        <div class="qc-icon">🍽️</div>
+        <div class="qc-name">La Parenthèse</div>
+        <div class="qc-meta">⭐ 4.8 — Resto</div>
+      </a>
+      <a class="quick-card" href="https://maps.google.com/?q=Ile+de+Loisirs+Creteil" target="_blank">
+        <div class="qc-icon">🎯</div>
+        <div class="qc-name">Île de Loisirs</div>
+        <div class="qc-meta">Parc &amp; activités</div>
+      </a>
+      <a class="quick-card" href="https://www.ratp.fr/plan-interactif" target="_blank">
+        <div class="qc-icon">🚇</div>
+        <div class="qc-name">Métro Ligne 8</div>
+        <div class="qc-meta">Créteil Université</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- SUPERMARCHÉS -->
+<div id="panel-supermarche" class="panel">
+  <div class="content">
+    <div class="section-title">Supermarchés</div>
+    <div id="list-supermarche"></div>
+    <button class="add-btn" onclick="openModal('supermarche')"><span class="add-plus">+</span> Ajouter un supermarché</button>
+  </div>
+</div>
+
+<!-- RESTAURANTS -->
+<div id="panel-restaurant" class="panel">
+  <div class="content">
+    <div class="section-title">Restaurants</div>
+    <div id="list-restaurant"></div>
+    <button class="add-btn" onclick="openModal('restaurant')"><span class="add-plus">+</span> Ajouter un restaurant</button>
+  </div>
+</div>
+
+<!-- CAFÉS -->
+<div id="panel-cafe" class="panel">
+  <div class="content">
+    <div class="section-title">Cafés &amp; boulangeries</div>
+    <div id="list-cafe"></div>
+    <button class="add-btn" onclick="openModal('cafe')"><span class="add-plus">+</span> Ajouter un café</button>
+  </div>
+</div>
+
+<!-- ACTIVITÉS -->
+<div id="panel-activite" class="panel">
+  <div class="content">
+    <div class="section-title">Activités</div>
+    <div id="list-activite"></div>
+    <button class="add-btn" onclick="openModal('activite')"><span class="add-plus">+</span> Ajouter une activité</button>
+  </div>
+</div>
+
+<!-- TRANSPORTS -->
+<div id="panel-transport" class="panel">
+  <div class="content">
+    <div class="section-title">Transports fixes</div>
+    <div class="metro-card">
+      <div class="metro-head">
+        <div class="metro-badge">8</div>
+        <div>
+          <div class="metro-name">Métro Ligne 8</div>
+          <div class="metro-station">Station Créteil Université</div>
+        </div>
+      </div>
+      <div class="metro-detail">Direction Pointe du Lac ou Opéra<br>Accès direct Paris centre · ~4 min en heure de pointe</div>
+    </div>
+    <a class="place-card" href="https://www.ratp.fr/plan-interactif" target="_blank">
+      <div class="p-icon" style="background:#eff6ff;">🗺️</div>
+      <div class="p-info">
+        <div class="p-name">Plan RATP interactif</div>
+        <div class="p-meta">Itinéraires &amp; horaires en temps réel</div>
+      </div>
+      <div class="p-right"><span class="arr">›</span></div>
+    </a>
+    <a class="place-card" href="https://www.velib-metropole.fr" target="_blank">
+      <div class="p-icon" style="background:#e6f7f2;">🚲</div>
+      <div class="p-info">
+        <div class="p-name">Vélib' Métropole</div>
+        <div class="p-meta">Location de vélos en libre-service</div>
+      </div>
+      <div class="p-right"><span class="arr">›</span></div>
+    </a>
+
+    <div class="section-title" style="margin-top:18px">Mes ajouts</div>
+    <button class="add-btn" onclick="openModal('transport')"><span class="add-plus">+</span> Ajouter un transport</button>
+    <div id="list-transport" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ARRIVÉE -->
+<div id="panel-arrivee" class="panel">
+  <div class="content">
+
+    <div class="arrival-intro">
+      <div class="arrival-intro-icon">🚇</div>
+      <div class="arrival-intro-text">
+        <strong>Depuis le métro</strong><br>
+        Prenez la <strong>ligne 8</strong> et descendez à la station <strong>Créteil Université</strong>.
+      </div>
+    </div>
+
+    <div class="steps-card">
+      <h3>Comment nous rejoindre ?</h3>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-line">
+          <div class="step-text">Prenez la sortie <strong>« Albert Chenevier »</strong> à la station Créteil Université.</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-line">
+          <div class="step-text">En sortant, vous arrivez sur une grande avenue. <strong>Traversez-la.</strong></div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-line">
+          <div class="step-text">La résidence se trouve <strong>juste en face</strong>, près du conservatoire.</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-line">
+          <div class="step-text">Pour vous repérer : une <strong>pharmacie</strong> se trouve à l'entrée, à côté d'une <strong>barrière rouge et blanche</strong>.</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-line">
+          <div class="step-text">La résidence est entourée de <strong>grilles blanches</strong>. Entrez par ce portail.</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-line">
+          <div class="step-text">Une fois à l'intérieur, <strong>longez la rue tout droit.</strong></div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-line">
+          <div class="step-text">Montez jusqu'au <strong>numéro 16</strong> : vous êtes arrivés ! 🎉</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-box-icon">💡</div>
+        <div class="tip-box-text">Un doute ? Appelez Lucie ou Antonino directement depuis l'onglet <strong>Accueil</strong> — ils seront ravis de vous guider !</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3 id="modal-title">Ajouter un lieu</h3>
+    <div class="field">
+      <label>Nom du lieu *</label>
+      <input type="text" id="in-name" placeholder="ex : Boulangerie du Coin" />
+    </div>
+    <div class="field">
+      <label>Description courte</label>
+      <input type="text" id="in-desc" placeholder="ex : 5 min à pied, ouvert le dimanche" />
+    </div>
+    <div class="field">
+      <label>Lien Google Maps ou site web</label>
+      <input type="url" id="in-url" placeholder="https://maps.google.com/..." />
+    </div>
+    <div class="field">
+      <label>Note (ex : 4.5)</label>
+      <input type="text" id="in-rating" placeholder="4.5" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save" onclick="savePlace()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const cfg = {
+  supermarche: { icon: '🛒', bg: '#e6f7f2', label: 'Supermarché' },
+  restaurant:  { icon: '🍽️', bg: '#fff0f0', label: 'Restaurant' },
+  cafe:        { icon: '☕',  bg: '#fff8e6', label: 'Café / Boulangerie' },
+  activite:    { icon: '🎯', bg: '#f5f3ff', label: 'Activité' },
+  transport:   { icon: '🚌', bg: '#eff6ff', label: 'Transport' }
+};
+
+const data = {
+  supermarche: [
+    { name: 'Carrefour', desc: 'Av. du Général de Gaulle', url: 'https://maps.google.com/?q=Carrefour+Creteil', rating: '4.0' },
+    { name: 'Supermarché Diagonal', desc: "Rue du Dr Ramon · 7j/7 jusqu'à 21h30", url: 'https://maps.google.com/?q=Supermarche+Diagonal+Creteil', rating: '4.5' },
+    { name: 'Franprix', desc: "17 Rue Henri Cardinaud · jusqu'à 23h", url: 'https://maps.google.com/?q=Franprix+Creteil', rating: '3.5' }
+  ],
+  restaurant: [
+    { name: 'La Parenthèse', desc: '29 Av. Pierre Brossolette · Cuisine française', url: 'https://maps.google.com/?q=La+Parenthese+Creteil', rating: '4.8' },
+    { name: "C'est là que c'est bon", desc: "10 Pass. de l'Image Saint-Martin", url: 'https://maps.google.com/?q=Cest+la+que+cest+bon+Creteil', rating: '4.7' },
+    { name: 'Bunsh Smash Burger', desc: "12 Rue d'Estienne d'Orves · jusqu'à 2h", url: 'https://maps.google.com/?q=Bunsh+Smash+Burger+Creteil', rating: '' }
+  ],
+  cafe: [
+    { name: 'Délicieuses Gourmandises', desc: '39 Av. de Verdun · Mar–Sam 7h–19h30', url: 'https://maps.google.com/?q=Delicieuses+Gourmandises+Creteil', rating: '4.8' },
+    { name: 'Boulangerie Signature', desc: '76 Rue du Général Leclerc · 6h30–20h30', url: 'https://maps.google.com/?q=Boulangerie+Signature+Creteil', rating: '4.0' },
+    { name: 'Pains & Saveurs', desc: '24 Rue du Général Leclerc · Bio & artisanal', url: 'https://maps.google.com/?q=Pains+Saveurs+Creteil', rating: '4.3' }
+  ],
+  activite: [
+    { name: 'Île de Loisirs de Créteil', desc: 'Parc, plage, voile, vélo, pique-nique', url: 'https://maps.google.com/?q=Ile+de+Loisirs+Creteil', rating: '4.1' },
+    { name: 'La Base — Escape Game', desc: 'Action Game & Escape Game · Mer–Dim', url: 'https://maps.google.com/?q=La+Base+Creteil+Escape+Game', rating: '5.0' }
+  ],
+  transport: []
+};
+
+let currentCat = null;
+
+function stars(r) {
+  if (!r) return '';
+  const n = parseFloat(r), f = Math.round(n);
+  return '<span class="p-stars">' + '★'.repeat(f) + '☆'.repeat(5-f) + '</span> ' + r + '/5';
+}
+
+function renderList(cat) {
+  const el = document.getElementById('list-' + cat);
+  if (!el) return;
+  const { icon, bg } = cfg[cat];
+  if (!data[cat].length) {
+    el.innerHTML = cat === 'transport' ? '' : '<div class="empty"><div class="empty-icon">' + icon + '</div>Aucun lieu pour l\'instant.<br>Appuyez sur + pour en ajouter un.</div>';
+  } else {
+    el.innerHTML = data[cat].map((item, i) => `
+      <div class="place-card" onclick="if(!event.target.classList.contains('del-btn'))window.open('${item.url}','_blank')">
+        <div class="p-icon" style="background:${bg}">${icon}</div>
+        <div class="p-info">
+          <div class="p-name">${item.name}</div>
+          <div class="p-meta">${item.desc}</div>
+          ${item.rating ? `<div class="p-rating">${stars(item.rating)}</div>` : ''}
+        </div>
+        <div class="p-right">
+          <button class="del-btn" onclick="del('${cat}',${i})" title="Supprimer">🗑️</button>
+          <span class="arr">›</span>
+        </div>
+      </div>
+    `).join('');
+  }
+  const b = document.getElementById('b-' + cat);
+  if (b) b.textContent = data[cat].length;
+}
+
+function del(cat, i) {
+  data[cat].splice(i, 1);
+  renderList(cat);
+}
+
+const tabOrder = ['accueil','arrivee','supermarche','restaurant','cafe','activite','transport'];
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelectorAll('.tab')[tabOrder.indexOf(name)].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openModal(cat) {
+  currentCat = cat;
+  document.getElementById('modal-title').textContent = 'Ajouter — ' + cfg[cat].label;
+  ['name','desc','url','rating'].forEach(f => document.getElementById('in-' + f).value = '');
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(() => document.getElementById('in-name').focus(), 300);
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  currentCat = null;
+}
+
+function savePlace() {
+  const name = document.getElementById('in-name').value.trim();
+  if (!name) { document.getElementById('in-name').focus(); return; }
+  data[currentCat].push({
+    name,
+    desc: document.getElementById('in-desc').value.trim(),
+    url: document.getElementById('in-url').value.trim() || 'https://maps.google.com',
+    rating: document.getElementById('in-rating').value.trim()
+  });
+  renderList(currentCat);
+  closeModal();
+}
+
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+Object.keys(data).forEach(renderList);
+</script>
+</body>
+</html>
